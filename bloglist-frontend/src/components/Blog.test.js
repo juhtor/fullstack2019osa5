@@ -21,7 +21,7 @@ describe('<Blog />', () => {
     )
   })
 
-  it('at start title and author are displayed', () => {
+  it('first the title and author are displayed', () => {
     const div = component.container.querySelector('.blog')
 
     expect(div).toHaveTextContent('title')
@@ -29,13 +29,13 @@ describe('<Blog />', () => {
 
   })
 
-  it('at start the details are not displayed', () => {
+  it('first the details are not displayed', () => {
     const div = component.container.querySelector('.togglableContent')
 
     expect(div).toHaveStyle('display: none')
   })
 
-  it('after clicking the button, children are displayed', () => {
+  it('after clicking the header blog deltails are displayed', () => {
     const button = component.container.querySelector('.blogHeader')
     fireEvent.click(button)
 

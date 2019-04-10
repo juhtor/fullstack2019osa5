@@ -115,6 +115,7 @@ const App = () => {
         blogUrl.reset()
         setBlogs(blogs.concat(response))
         showNotification('new blog was added: ' + response.title)
+        console.log('new blog added', blog)
       })
       .catch(error => {
         showError(error.response.data.error)
@@ -127,13 +128,14 @@ const App = () => {
         author: blog.author,
         url: blog.url,
         likes: blog.likes + 1,
-        user: blog.user
+        user: blog.user.id
       }
       const id = blog.id
       blogService
         .update(id, updatedBlog)
         .then(response => {
           setBlogs(blogs.map(blog => blog.id !== id ? blog : response))
+          showNotification('you liked blog: ' + blog.title)
         })
         .catch(error => {
           showError(error.response.data.error)
@@ -143,10 +145,14 @@ const App = () => {
   const handleRemove = (blog) => {
     return () => {
       const id = blog.id
+      if (!window.confirm('haluatko varmasti poistaa blogin\n' + blog.title)) {
+        return
+      }
       blogService
         .remove(id)
         .then(() => {
           setBlogs(blogs.filter(function (blog) {
+            showNotification('blog removed: ' + blog.title)
             return blog.id !== id
           }))
         })
@@ -171,6 +177,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification notification={notification} />
       <p>
         {user.username} logged in
         <button onClick={handleLogout}>logout</button >

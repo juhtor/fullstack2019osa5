@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
+import { useResource } from './hooks'
 
 const useField = (type) => {
   const [value, setValue] = useState('')
@@ -14,52 +13,6 @@ const useField = (type) => {
     value,
     onChange
   }
-}
-
-const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
-
-  const create = (resource) => {
-    setResources(resources.concat(resource))
-  }
-  const remove = (id) => {
-    setResources(resources.filter(resource => resource.id !== id))
-  }
-  const update = (id, resource) => {
-    setResources(resources.filter(resource => resource.id !== id).concat(resource))
-  }
-  const service = {
-    token: null,
-
-    setToken: (newToken) => {
-      service.token = `bearer ${newToken}`
-    },
-
-    getAll: () => {
-      const request = axios.get(baseUrl)
-      request.then(response => { setResources(response.data) })
-    },
-
-    create: async (newObject) => {
-      const config = {
-        headers: { Authorization: service.token },
-      }
-
-      const response = await axios.post(baseUrl, newObject, config)
-      create(response.data)
-    },
-
-    update: (id, newObject) => {
-      const request = axios.put(`${baseUrl}/${id}`, newObject)
-      request.then(response => {
-        update(id, response.data)
-      })
-    },
-  }
-
-  return [
-    resources, service
-  ]
 }
 
 const App = () => {

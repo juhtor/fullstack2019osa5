@@ -6,8 +6,9 @@ jest.mock('./services/blogs')
 import App from './App'
 
 
-describe.skip('<App />', () => {
+describe('<App />', () => {
   it('if no user logged, blogs are not rendered', async () => {
+    localStorage.clear()
     let component = null
     component = render(
       <App />
